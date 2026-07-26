@@ -1,11 +1,10 @@
 import os
 import sys
+import pandas as pd
 from src.mlproject.exception import CustomException
 from src.mlproject.logger import logging
-import pandas as pd
 from src.mlproject.utils import read_sql_data
 from dataclasses import dataclass
-
 from sklearn.model_selection import train_test_split
 
 
