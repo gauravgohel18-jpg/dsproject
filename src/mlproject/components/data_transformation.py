@@ -68,20 +68,28 @@ class DataTransformation:
             preprocessing_obj = self.get_data_transformation()
 
 
-# # Divide a train Dataset into a input and output feature
+            logging.info("Divide A Train and Test Data Into A Input And Output Feature")
 
-#             x_train = train_df.drop('math_score',axis=1)
-#             y_train = train_df.math_score
+            input_feature_train_df = train_df.drop('math_score', axis=1)
+            target_feature_train_df = train_df.math_score
 
-# # Divide a test Dataset into a input and output feature
+            input_feature_test_df = test_df.drop('math_score', axis=1)
+            target_feature_test_df = test_df.math_score
 
-#             x_test = test_df.drop('math_score',axis=1)
-#             y_test = test_df.math_score
+            logging.info("Applying Preprocessing on training and test dataframe")
 
-#             logging.info("Divide A Train and Test Data Into A Input And Output Feature")
+            input_feature_train_arr = preprocessing_obj.fit_transform(input_feature_train_df)
+            input_feature_test_arr = preprocessing_obj.transform(input_feature_test_df)
 
-            preprocessed_train = preprocessing_obj.fit_transform(train_df)
-            preprocessed_test = preprocessing_obj.transform(test_df)
+            train_arr = np.c_[
+                input_feature_train_arr,
+                np.array(target_feature_train_df)
+            ]
+
+            test_arr = np.c_[
+                input_feature_test_arr,
+                np.array(target_feature_test_df)
+            ]
 
             logging.info("Save Preprocessing Object")
 
@@ -92,8 +100,8 @@ class DataTransformation:
             )
 
             return(
-                preprocessed_train,
-                preprocessed_test,
+                train_arr,
+                test_arr,
                 self.data_transformation_config.preprocessor_obj_file_path
             )
         except Exception as e:
